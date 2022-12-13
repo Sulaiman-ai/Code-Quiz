@@ -1,11 +1,11 @@
-questions = [{
-    title: "Which method could you use to select a HTML element?",
-    options: ["getElementbyId()",
-    "selectElement()",
-    "use()",
-    "select()"],
-    correct_option_index: 0
-}]
+// questions = [{
+//     title: "Which method could you use to select a HTML element?",
+//     options: ["getElementbyId()",
+//     "selectElement()",
+//     "use()",
+//     "select()"],
+//     correct_option_index: 0
+// }]
 
 start_button = document.getElementById("start")
 let time_display = document.getElementById("time")
@@ -19,10 +19,15 @@ let button3 = document.getElementById("3")
 let button4 = document.getElementById("4")
 let button_list = [button1, button2, button3, button4]
 
+let q_key = 1
+let current_question = getQuestion(q_key)
+let score = 0
+
 function startGame(){
     console.log("start game")
     time_display.innerHTML = 60
     startTimer()
+    addChoiceListeners()
     questions_div.classList.remove("hide")
     displayQuestion(getQuestion(1))
 }
@@ -35,10 +40,14 @@ function startTimer(){
     }, 1000)
 }
 
-function checkAnswer(question_num, answer){
-    if (questions[question_num].correct_option_index == answer){
+function checkAnswer(choiceIndex, answerIndex){
+    if (choiceIndex == answerIndex){
         return true
     }
+    return false
+    // if (questions[question_num].correct_option_index == answer){
+    //     return true
+    // }
 
 }
 
@@ -49,7 +58,35 @@ function getQuestion(key){
 function displayQuestion(q_obj){
     question_display.innerHTML = q_obj.question;
     button_list.forEach(function(button, index){
-        button.innerHTML = q_obj.options[index]
+        button.textContent = q_obj.options[index]
     })
     // choices_display.innerHTML = q_obj.options;
 }
+
+function handleButton(buttonIndex){
+    console.log("handling")
+    correct = checkAnswer(buttonIndex, current_question.answer)
+    q_key++;
+    current_question = getQuestion(q_key)
+    displayQuestion(current_question)
+    if (correct){
+        score++
+    } else {
+        time_display.innerHTML -= 10;
+    }
+}
+
+function addChoiceListeners(){
+    console.log("listen")
+    button_list.forEach((button, index) => {
+        console.log(button)
+        button.addEventListener('click', () =>{handleButton(index)})
+    })
+}
+
+// click button
+// call function
+// pass in which button
+// compare button index against correct answer index
+// if answer is correct move to next question
+// if answer is wrong decrease time left by 10 seconds
