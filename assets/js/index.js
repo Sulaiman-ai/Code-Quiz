@@ -64,6 +64,9 @@ function displayQuestion(q_obj){
 }
 
 function handleButton(buttonIndex){
+    if (q_key == 5){
+        
+    }
     console.log("handling")
     correct = checkAnswer(buttonIndex, current_question.answer)
     q_key++;
